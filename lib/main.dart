@@ -4,6 +4,7 @@ import 'package:start_project/categories/view/categories_grid_page.dart';
 //TODO: splash_screen
 //TODO: bottomNavigationBar
 
+
 void main() {
   runApp(const MyApp());
 }

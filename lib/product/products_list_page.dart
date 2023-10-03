@@ -17,22 +17,48 @@ class ProductsListPage extends StatefulWidget {
 
 class _ProductsListPageState extends State<ProductsListPage> {
   final scrollController = ScrollController();
-  Future<List<ProductModel>>? _products;
+  int setNumber = 0;
+  List<ProductModel> products = [];
+  bool isLoading = false;
+  bool hasMoreData = true;
+
   void _getData() async {
+    if (isLoading || !hasMoreData) return;
 
-    final categories = await ProductsApi().loadList(categoryId: widget.categoryId);
     setState(() {
-      _products = Future.value(categories);
+      isLoading = true;
+    });
 
+    final productList = await ProductsApi()
+        .loadList(categoryId: widget.categoryId, offSet: setNumber);
+
+    setState(() {
+      products.addAll(productList);
+      isLoading = false;
+      if (productList.length < 15) {
+        hasMoreData = false;
+        print('that is all data');
+      }
     });
   }
 
   @override
   void initState() {
     super.initState();
-    //
+    scrollController.addListener(_scrollListener);
     _getData();
   }
+
+  void _scrollListener() {
+    const int limitSet = 15;
+    if ((scrollController.position.pixels ==
+            scrollController.position.maxScrollExtent) &&
+        (hasMoreData == true)) {
+      setNumber = setNumber + limitSet;
+      _getData();
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -42,45 +68,42 @@ class _ProductsListPageState extends State<ProductsListPage> {
         centerTitle: true,
       ),
       body: SafeArea(
-        child: FutureBuilder<List<ProductModel>>(
-          future: _products,
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
+        child: ListView.builder(
+          controller: scrollController,
+          itemCount: (isLoading || !hasMoreData)
+              ? products.length + 1
+              : products.length,
+          padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 5),
+          itemBuilder: (context, index) {
+            if (index < products.length) {
+              final product = products[index];
+              return ProductItemData(
+                productImage: product.imageUrl ??
+                    'https://www.alladvertising.ru/porridge/83/101/cc0022fa79fbce43dcb67b4e40d73d2d',
+                productName: product.title ?? 'Без имени',
+                productDescription: product.productDescription ??
+                    'К сожалению, описание отсутствует.',
+                productPrice: product.price,
+                productId: product.productId,
+              );
+            } else if (isLoading) {
               return const Center(
-                child: CircularProgressIndicator(
-                  color: Colors.black,
-                  backgroundColor: Colors.blueGrey,
+                child: CircularProgressIndicator(),
+              );
+            } else if (products.isNotEmpty) {
+              return const Center(
+                child: Text(
+                  'это все товары',
+                  style: TextStyle(
+                    fontSize: 10,
+                  ),
                 ),
               );
-            } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-              return const EmptyCategoryPage();
-            } else if (snapshot.hasError) {
-              return Text('Ошибка: ${snapshot.error}');
-            } else {
-              final products = snapshot.data;
-
-              return ListView.builder(
-                controller: scrollController,
-                itemCount: products?.length,
-                padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 5),
-                itemBuilder: (context, index) {
-                  final product = products?[index];
-                  if (product == null){
-                    return const SizedBox.shrink();
-                  }
-                  else{
-                    return ProductItemData(
-                      productImage: product.imageUrl ?? 'https://www.alladvertising.ru/porridge/83/101/cc0022fa79fbce43dcb67b4e40d73d2d',
-                      productName: product.title ?? 'Без имени',
-                      productDescription: product.productDescription ?? 'К сожалению, описание отсутствует.',
-                      productPrice: product.price,
-                      productId: product.productId,
-                    );
-                  }
-                }, //children
-              );
             }
-          },
+            else {
+              return const EmptyCategoryPage();
+            }
+          }, //children
         ),
       ),
     );
