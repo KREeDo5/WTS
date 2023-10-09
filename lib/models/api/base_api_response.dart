@@ -1,5 +1,8 @@
+import '../entities/meta_api_model.dart';
+
 class BaseApiResponse {
   BaseApiResponse({required this.metaInfo, required this.dataInfo});
-  final dynamic metaInfo;
+
+  final MetaModel metaInfo;
   final dynamic dataInfo;
 }

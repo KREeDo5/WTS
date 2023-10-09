@@ -29,9 +29,9 @@ class BaseApi {
   BaseApiResponse parseResponse(String responseBody) {
     try {
       final rawResponse = json.decode(responseBody);
-      final metaJson = rawResponse['meta'];
-      final dataJson = rawResponse['data'];
-      return BaseApiResponse(metaInfo: metaJson, dataInfo: dataJson);
+      final metaJson = rawResponse['meta']; //Map<String, dynamic> {success: true, error: }
+      final dataJson = rawResponse['data']; //dynamic
+      return BaseApiResponse(metaInfo: MetaModel.fromJson(metaJson), dataInfo: dataJson);
 
     } catch (e) {
       return BaseApiResponse(metaInfo: MetaModel(success: false, error: 'Failed to parse JSON: $e',), dataInfo: []);

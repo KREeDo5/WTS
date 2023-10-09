@@ -20,16 +20,8 @@ class CategoryModel {
   String fullName;
   String? categoryDescription;         //if you use it, catch null
 
-  static final _categoriesApi = CategoriesApi();
-
-  static Future<List<CategoryModel>> loadList() async {
-    final categories = await _categoriesApi.loadList();
-    return categories;
-  }
-
   factory CategoryModel.fromJson(Map<String, dynamic> json) =>
       _$CategoryModelFromJson(json);
 
   Map<String, dynamic> toJson() => _$CategoryModelToJson(this);
-
 }

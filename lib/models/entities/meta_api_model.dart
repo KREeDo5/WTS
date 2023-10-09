@@ -3,8 +3,8 @@ part 'meta_api_model.g.dart';
 
 @JsonSerializable()
 class MetaModel {
-  bool success;
-  String? error;
+  final bool success;
+  final String? error;
 
   MetaModel({
     required this.success,

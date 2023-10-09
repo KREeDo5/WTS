@@ -1,8 +1,9 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:start_project/product/models/api/products_api.dart';
-import 'package:start_project/product/view/product_details_widgets/product_details_widget.dart';
-import 'package:start_project/product/view/product_details_widgets/empty_product_details_error_widget.dart';
+import 'package:start_project/product/view/product_details_view/empty_product_details_error_widget.dart';
+import 'package:start_project/views/network_image_widget.dart';
+import 'package:start_project/resources/resources.dart';
 import 'models/entities/product_data_api_model.dart';
 
 class ProductDetailPage extends StatefulWidget {
@@ -26,6 +27,32 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
   void initState() {
     super.initState();
     _getData();
+  }
+  _drawProductName(String? productName) {
+    final String name = productName ?? 'Без имени';
+    return Text(
+      name,
+      style: const TextStyle(
+        fontSize: 16,
+        fontWeight: FontWeight.w600,
+      ),
+    );
+  }
+  _drawProductPrice(int productPrice) {
+    return Text(
+      '$productPrice ₽',
+      style: const TextStyle(
+        fontSize: 20,
+        color: Colors.green,
+        fontWeight: FontWeight.w600,
+      ),
+    );
+  }
+  _drawProductDescription(String? productDescription) {
+    if (productDescription == ' ' || productDescription == null) {
+      productDescription = 'К сожалению, описание отсутствует.';
+    }
+    return Text(productDescription);
   }
 
   @override
@@ -58,12 +85,23 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                   return const SizedBox.shrink();
                 }
                 else{
-                  return ProductDetails(
-                    productName: product.title ?? 'Без имени',
-                    productImage: product.imageUrl ?? 'https://www.alladvertising.ru/porridge/83/101/cc0022fa79fbce43dcb67b4e40d73d2d',
-                    productDescription: product.productDescription ?? 'К сожалению, описание отсутствует.',
-                    productPrice: product.price,
-                    productId: product.productId,
+                  return Container(
+                    padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 5),
+                    child: Column(
+                      children: [
+                        NetworkImageWidget(
+                          img: product.imageUrl,
+                          height: 300,
+                        ),
+                        const Divider(height: 1,),
+                        _drawProductName(product.title),
+                        const Divider(height: 1,),
+                        _drawProductPrice(product.price),
+                        const Divider(height: 1,),
+                        const SizedBox(height: 20,),
+                        _drawProductDescription(product.productDescription),
+                      ],
+                    ),
                   );
                 }
               }

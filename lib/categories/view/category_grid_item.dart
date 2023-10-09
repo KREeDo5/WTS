@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:start_project/views/network_image_widget.dart';
 import '../../../resources/resources.dart';
-import '../../product/products_list_page.dart';
+import '../../product/product_list_page.dart';
 import '../models/entities/category_data_api_model.dart';
 
 class CategoryGridItem extends StatelessWidget {
   const CategoryGridItem({super.key, required this.category});
-  final CategoryModel category; //TODO: замена dynamic на класс категорий,
+  final CategoryModel category;
 
   @override
   Widget build(BuildContext context) {
@@ -21,16 +22,14 @@ class CategoryGridItem extends StatelessWidget {
           ),
         ),
         child: InkWell(
-          child: Image.network(
-            category.imageUrl,
-            fit: BoxFit.fill,
-            errorBuilder: (context, error, stackTrace) => Image.asset(AppImages.zhdun),
+          child: NetworkImageWidget(
+            img: category.imageUrl,
           ),
           onTap: () {
             Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => ProductsListPage(
+                builder: (context) => ProductListPage(
                   categoryName: category.title.toLowerCase(),
                   categoryId: id,
                 ),

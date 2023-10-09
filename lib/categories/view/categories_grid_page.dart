@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:start_project/categories/models/api/categories_api.dart';
 import 'package:start_project/categories/view/category_grid_item.dart';
 import '../models/entities/category_data_api_model.dart';
 
@@ -16,7 +17,7 @@ class _CategoriesPageState extends State<CategoriesPage> {
   Future<List<CategoryModel>>? _categories;
 
   void _getData() async {
-    final categories = await CategoryModel.loadList();
+    final categories = await CategoriesApi().loadList();
     setState(() {
       _categories = Future.value(categories);
     });
