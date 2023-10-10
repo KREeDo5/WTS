@@ -1,6 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
     <application
-        android:label="start_project"
+        android:label="magazin of dzhun"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity
