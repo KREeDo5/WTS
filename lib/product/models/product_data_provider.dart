@@ -40,6 +40,8 @@ class ProductDataProvider extends ValueNotifier<List<ProductModel>> {
   }
 
   Future<void> reload() async {
+    if (isLoading) return;
+
     value.clear();
     allDataLoaded = false;
     notifyListeners();
