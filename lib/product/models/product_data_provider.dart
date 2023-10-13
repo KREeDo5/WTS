@@ -10,8 +10,8 @@ class ProductDataProvider extends ValueNotifier<List<ProductModel>> {
 
   bool isLoading = false;
   bool allDataLoaded = false;
-  int limitSet = 15;
 
+  Function(String text)? textCallBack;
 
   Future<void> loadNextItems() async {
     //реализовать логику загрузки данных через api с контролем overflow
@@ -27,7 +27,7 @@ class ProductDataProvider extends ValueNotifier<List<ProductModel>> {
       );
       if (productList.isEmpty) {
         allDataLoaded = true;
-        print('overflow-можно сделать уведомление');
+        textCallBack!('Все продукты были загружены.');
       } else {
         value.addAll(productList);
       }
