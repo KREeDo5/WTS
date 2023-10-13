@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:start_project/product/models/entities/product_data_api_model.dart';
+import 'package:start_project/product/product_details_page.dart';
 import 'package:start_project/views/network_image_widget.dart';
 import 'product_price_widget.dart';
 
@@ -22,11 +23,22 @@ class ProductListItem extends StatelessWidget {
       margin: const EdgeInsets.only(bottom: 5),
       child: Row(
         children: [
-          NetworkImageWidget(
-            img: productItem.imageUrl,
-            height: 150,
-            width: 150,
-            margin: 5,
+          InkWell(
+            child: NetworkImageWidget(
+              img: productItem.imageUrl,
+              height: 150,
+              width: 150,
+              margin: 5,
+            ),
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) =>
+                      ProductDetailPage(productId: productItem.productId),
+                ),
+              );
+            },
           ),
           Expanded(
             child: Column(
