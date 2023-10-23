@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:start_project/categories/models/api/categories_api.dart';
 import 'package:start_project/categories/view/category_grid_item.dart';
-import '../models/entities/category_data_api_model.dart';
+import 'models/entities/category_model.dart';
 
 
 class CategoriesPage extends StatefulWidget {

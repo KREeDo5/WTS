@@ -1,10 +1,10 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:start_project/product/models/api/products_api.dart';
-import 'package:start_project/product/view/product_details_view/empty_product_details_error_widget.dart';
+import 'package:start_project/product/view/product_details_view/empty_details_widget.dart';
 import 'package:start_project/views/network_image_widget.dart';
 import 'package:start_project/resources/resources.dart';
-import 'models/entities/product_data_api_model.dart';
+import 'models/entities/product_model.dart';
 
 class ProductDetailPage extends StatefulWidget {
   const ProductDetailPage({super.key, required this.productId});

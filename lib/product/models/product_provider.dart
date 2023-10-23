@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:start_project/product/models/api/products_api.dart';
-import 'package:start_project/product/models/entities/product_data_api_model.dart';
+import 'package:start_project/product/models/entities/product_model.dart';
 
 class ProductDataProvider extends ValueNotifier<List<ProductModel>> {
   ProductDataProvider({required this.categoryId}) : super([]);

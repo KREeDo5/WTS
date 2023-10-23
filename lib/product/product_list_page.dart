@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:start_project/product/models/entities/product_data_api_model.dart';
-import 'package:start_project/product/models/product_data_provider.dart';
+import 'package:start_project/product/models/entities/product_model.dart';
+import 'package:start_project/product/models/product_provider.dart';
 import 'package:start_project/product/view/product_list_view/product_item_widget.dart';
-import 'view/product_list_view/empty_category_error_widget.dart';
+import 'view/product_list_view/empty_category_widget.dart';
 
 class ProductListPage extends StatefulWidget {
   const ProductListPage(

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:start_project/views/network_image_widget.dart';
 import '../../../resources/resources.dart';
 import '../../product/product_list_page.dart';
-import '../models/entities/category_data_api_model.dart';
+import '../models/entities/category_model.dart';
 
 class CategoryGridItem extends StatelessWidget {
   const CategoryGridItem({super.key, required this.category});

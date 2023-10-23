@@ -1,5 +1,5 @@
 import '../../../models/api/base_api.dart';
-import 'package:start_project/product/models/entities/product_data_api_model.dart';
+import 'package:start_project/product/models/entities/product_model.dart';
 
 class ProductsApi extends BaseApi {
   Future<List<ProductModel>> loadList({int? categoryId, int? offSet}) async {

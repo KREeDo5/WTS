@@ -1,5 +1,5 @@
 import '../../../models/api/base_api.dart';
-import 'package:start_project/categories/models/entities/category_data_api_model.dart';
+import 'package:start_project/categories/models/entities/category_model.dart';
 
 class CategoriesApi extends BaseApi{
   Future<List<CategoryModel>> loadList() async {
