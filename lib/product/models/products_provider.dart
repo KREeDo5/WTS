@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:start_project/product/models/api/products_api.dart';
 import 'package:start_project/product/models/entities/product_model.dart';
 
-class ProductDataProvider extends ValueNotifier<List<ProductModel>> {
-  ProductDataProvider({required this.categoryId}) : super([]);
+class ProductsDataProvider extends ValueNotifier<List<ProductModel>> {
+  ProductsDataProvider({required this.categoryId}) : super([]);
   int categoryId;
 
   ProductsApi api = ProductsApi();
@@ -11,10 +11,9 @@ class ProductDataProvider extends ValueNotifier<List<ProductModel>> {
   bool isLoading = false;
   bool allDataLoaded = false;
 
-  Function(String text)? textCallBack;
+  void Function(String text)? textCallBack;
 
   Future<void> loadNextItems() async {
-    //реализовать логику загрузки данных через api с контролем overflow
     if (isLoading || allDataLoaded) return;
 
     isLoading = true;
@@ -25,7 +24,6 @@ class ProductDataProvider extends ValueNotifier<List<ProductModel>> {
         categoryId: categoryId,
         offSet: value.length,
       );
-      print('ok');
       if (productList.isEmpty) {
         allDataLoaded = true;
         textCallBack!('Все продукты были загружены.');

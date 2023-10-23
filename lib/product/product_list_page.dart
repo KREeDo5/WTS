@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:start_project/product/models/entities/product_model.dart';
-import 'package:start_project/product/models/product_provider.dart';
+import 'package:start_project/product/models/products_provider.dart';
 import 'package:start_project/product/view/product_list_view/product_item_widget.dart';
 import 'view/product_list_view/empty_category_widget.dart';
 
@@ -17,12 +17,12 @@ class ProductListPage extends StatefulWidget {
 
 class _ProductListPageState extends State<ProductListPage> {
   final scrollController = ScrollController();
-  late ProductDataProvider productDataProvider;
+  late ProductsDataProvider productDataProvider;
 
   @override
   void initState() {
     super.initState();
-    productDataProvider = ProductDataProvider(categoryId: widget.categoryId);
+    productDataProvider = ProductsDataProvider(categoryId: widget.categoryId);
     productDataProvider.textCallBack = (text) {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(text)));
     };

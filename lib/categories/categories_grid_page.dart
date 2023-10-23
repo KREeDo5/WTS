@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:start_project/categories/models/category_provider.dart';
+import 'package:start_project/categories/models/categories_provider.dart';
 import 'package:start_project/categories/view/category_grid_item.dart';
 import 'models/entities/category_model.dart';
 
@@ -15,12 +15,12 @@ class CategoriesPage extends StatefulWidget {
 
 class _CategoriesPageState extends State<CategoriesPage> {
   final scrollController = ScrollController();
-  late CategoryDataProvider categoryDataProvider;
+  late CategoriesDataProvider categoryDataProvider;
 
   @override
   void initState() {
     super.initState();
-    categoryDataProvider = CategoryDataProvider();
+    categoryDataProvider = CategoriesDataProvider();
     categoryDataProvider.textCallBack = (text) {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(text)));
     };

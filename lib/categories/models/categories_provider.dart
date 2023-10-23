@@ -2,15 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:start_project/categories/models/api/categories_api.dart';
 import 'package:start_project/categories/models/entities/category_model.dart';
 
-class CategoryDataProvider extends ValueNotifier<List<CategoryModel>> {
-  CategoryDataProvider() : super([]);
+class CategoriesDataProvider extends ValueNotifier<List<CategoryModel>> {
+  CategoriesDataProvider() : super([]);
 
   CategoriesApi api = CategoriesApi();
 
   bool isLoading = false;
   bool allDataLoaded = false;
 
-  Function(String text)? textCallBack;
+  void Function(String text)? textCallBack;
 
   Future<void> loadNextItems() async {
     if (allDataLoaded){
