@@ -31,8 +31,8 @@ class _ProductListPageState extends State<ProductListPage> {
   }
 
   void _scrollListener() {
-    if (scrollController.position.pixels ==
-        scrollController.position.maxScrollExtent) {
+    if (scrollController.position.pixels >=
+        scrollController.position.maxScrollExtent - 500.0) {
       productDataProvider.loadNextItems();
     }
   }

@@ -25,6 +25,7 @@ class ProductDataProvider extends ValueNotifier<List<ProductModel>> {
         categoryId: categoryId,
         offSet: value.length,
       );
+      print('ok');
       if (productList.isEmpty) {
         allDataLoaded = true;
         textCallBack!('Все продукты были загружены.');

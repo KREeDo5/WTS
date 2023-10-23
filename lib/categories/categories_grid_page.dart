@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:start_project/categories/models/api/categories_api.dart';
+import 'package:start_project/categories/models/category_provider.dart';
 import 'package:start_project/categories/view/category_grid_item.dart';
 import 'models/entities/category_model.dart';
 
@@ -14,19 +14,36 @@ class CategoriesPage extends StatefulWidget {
 }
 
 class _CategoriesPageState extends State<CategoriesPage> {
-  Future<List<CategoryModel>>? _categories;
-
-  void _getData() async {
-    final categories = await CategoriesApi().loadList();
-    setState(() {
-      _categories = Future.value(categories);
-    });
-  }
+  final scrollController = ScrollController();
+  late CategoryDataProvider categoryDataProvider;
 
   @override
   void initState() {
     super.initState();
-    _getData();
+    categoryDataProvider = CategoryDataProvider();
+    categoryDataProvider.textCallBack = (text) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(text)));
+    };
+    scrollController.addListener(_scrollListener);
+    categoryDataProvider.loadNextItems();
+  }
+
+  void _scrollListener() {
+    if (scrollController.position.pixels ==
+        scrollController.position.maxScrollExtent) {
+      categoryDataProvider.loadNextItems();
+    }
+  }
+
+  Future<void> _refresh() async {
+    categoryDataProvider.reload();
+  }
+
+  @override
+  void dispose() {
+    scrollController.dispose();
+    categoryDataProvider.dispose();
+    super.dispose();
   }
 
   @override
@@ -38,37 +55,35 @@ class _CategoriesPageState extends State<CategoriesPage> {
         centerTitle: true,
       ),
       body: SafeArea(
-        child: FutureBuilder<List<CategoryModel>>(
-          future: _categories,
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return const Center(
-                child: LinearProgressIndicator(
-                  color: Colors.black,
-                  backgroundColor: Colors.blueGrey,
-                ),
-              );
-            } else if (snapshot.hasError) {
-              return Text('Error: ${snapshot.error}');
-            } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-              return const Text('No categories available.');
-            } else {
-              final categories = snapshot.data;
-
-              return GridView.builder(
-                padding: const EdgeInsets.symmetric(vertical: 10),
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2,
-                  crossAxisSpacing: 5,
-                  mainAxisSpacing: 5,
-                ),
-                itemCount: categories?.length,
-                itemBuilder: (context, index) {
-                  return CategoryGridItem(category: categories![index],);
-                },
-              );
-            }
-          },
+        child: RefreshIndicator(
+          onRefresh: _refresh,
+          child:ValueListenableBuilder<List<CategoryModel>>(
+            valueListenable: categoryDataProvider,
+            builder: (context, categoryList, child) {
+                return GridView.builder(
+                  controller: scrollController,
+                  padding: const EdgeInsets.symmetric(vertical: 10),
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2,
+                    crossAxisSpacing: 5,
+                    mainAxisSpacing: 5,
+                  ),
+                  itemCount: categoryList.length + ((categoryDataProvider.isLoading) ? 1 : 0),
+                  itemBuilder: (context, index) {
+                    if (index < categoryList.length) {
+                      final category = categoryList[index];
+                      return CategoryGridItem(category: category,);
+                    } else if (categoryDataProvider.isLoading) {
+                      return const Center(
+                        child: CircularProgressIndicator(),
+                      );
+                    } else {
+                      return const Placeholder();
+                    }
+                  },
+                );
+              }
+          ),
         ),
       ),
     );
